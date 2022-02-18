@@ -1,0 +1,52 @@
+<mvc:View
+    controllerName="ch.nic.mapsample.controller.Overview"
+	xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic"
+	xmlns:tnt="sap.tnt"
+	xmlns:core="sap.ui.core"
+    height="100%"
+	id="overview"
+>
+	<semantic:FullscreenPage id="idOverview">
+		<tnt:ToolHeader
+		>
+			<Button icon="sap-icon://nav-back" press="onNavBack"/>
+			<Button icon="sap-icon://sap-logo-shape" press="onHome"/>
+			<Title text="Home" titleStyle="H5"/>
+			<ToolbarSpacer/>
+			<Button icon="sap-icon://account"/>
+		</tnt:ToolHeader>
+		<semantic:content>
+			<IconTabBar id="idTabBar" expandable="false" selectedKey="{view>/selectedTabKey}" select="onTabSelect">
+				<items>
+					<IconTabFilter text="Overview" key="main">
+						<Text text="Overview"/>
+						<core:Fragment fragmentName="ch.nic.mapsample.view.TilesFragment" type="XML" id="idTileFragment"/>
+					</IconTabFilter>
+					<IconTabFilter text="Map" key="map" id="mapFilter">
+						<Title text="Map" titleStyle="H5" class="sapUiTinyMarginTop"/>
+						<ActionSelect 
+							class="sapUiSmallMarginBegin"
+							id="select"
+							change="onActionSelect"
+							items="{maps>/types}">
+							<items>
+								<core:Item key="{maps>key}" text="{maps>text}" id="selectItem"/>
+							</items>
+						</ActionSelect>
+						<!-- <core:Fragment fragmentName="ch.nic.mapsample.view.Mapfragment" type="XML" id="idMapFragment"/> -->
+					</IconTabFilter>
+					<IconTabFilter text="GeoMap" key="geomap">
+						<Text text="GeoMap"/>
+						<core:Fragment fragmentName="ch.nic.mapsample.view.GeoMap" type="XML" id="geomapFragment"/>
+					</IconTabFilter>
+					<IconTabFilter text="Settings" key="setting">
+						<Text text="Settings"/>
+						<core:Fragment fragmentName="ch.nic.mapsample.view.SettingFragment" type="XML" id="idSettingFragment"/>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</semantic:content>
+	</semantic:FullscreenPage>
+</mvc:View>

@@ -1,0 +1,56 @@
+<mvc:View controllerName="ch.nic.mapsample.controller.Overview"
+	xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout"
+	xmlns="sap.m" xmlns:vk="sap.ui.vk"
+	xmlns:vbm="sap.ui.vbm" height="100%" displayBlock="true" id="geoview">
+	<l:FixFlex class="fixFlexVertical" minFlexSize="500">
+		<l:fixContent>
+			<Panel>
+				<content>
+					<Text text="This Map shows locations of the latest Logins" class="sapUiSmallMarginBottom"/>
+				</content>
+			</Panel>
+		</l:fixContent>
+		<l:flexContent >
+            <VBox  backgroundDesign="Solid"
+            >
+                <vk:MapContainer autoAdjustHeight="false">
+                    <vk:content>
+                        <vk:ContainerContent title="Analytic Map"
+                            icon="sap-icon://geographic-bubble-chart">
+                            <vk:content>
+                                <vbm:GeoMap id="geomap" mapConfiguration="{mapConfig>/}" initialZoom="5" initialPosition="9;47" width="100%" enableAnimation="true">
+                                    <vbm:vos>
+                                        <vbm:Spots click="onClickItem" items="{/Spots}"> <!--contextMenu="onContextMenuItem"-->
+                                            <vbm:items>
+                                                <vbm:Spot position="{logitude};{latitude};0" tooltip="{tooltip}"
+                                                    click="onClickSpot" type="{type}">
+                                                </vbm:Spot>
+                                            </vbm:items>
+                                        </vbm:Spots>
+                                        <!-- <vbm:Areas items="{/Areas}">
+                                            <vbm:Area id="Area" click="onClickArea"
+                                            tooltip="{B}" color="{C}" colorBorder="rgba(118,118,118,0.6)"
+                                            position="{H}" key="{K}" hotDeltaColor="{D}"/>
+                                        </vbm:Areas> -->
+                                        <!-- <vbm:Routes items="{/StreetRoutes}">
+                                            <vbm:Route position="{route}"
+                                                color="{color}" colorBorder="{colorBorder}" linewidth="{line}"
+                                                tooltip="{tooltip}" click="onClickRoute" contextMenu="onContextMenuRoute"/>
+                                        </vbm:Routes> -->
+                                    </vbm:vos>
+                                    <vbm:clusters>
+                                        <vbm:ClusterTree id="clusterTree" areaColor="rgba(255,255,255,0)" areaColorBorder="rgba(255,255,255,0)" click="onCluster">
+                                                <vbm:vizTemplate>
+                                                    <vbm:Cluster id="vizTemplate" type="Error" icon="sap-icon://visits"/>
+                                                </vbm:vizTemplate>
+                                        </vbm:ClusterTree>
+                                    </vbm:clusters>
+                                </vbm:GeoMap>
+                            </vk:content>
+					    </vk:ContainerContent>
+				    </vk:content>
+			    </vk:MapContainer>
+            </VBox>
+		</l:flexContent>
+	</l:FixFlex>
+</mvc:View>

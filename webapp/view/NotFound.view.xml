@@ -1,0 +1,19 @@
+<mvc:View
+	controllerName=""
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	displayBlock="true"
+	height="100%"
+	busyIndicatorDelay="0"
+>
+    <MessagePage
+		title="Page NotFound"
+		text="Page could not be found"
+		icon="sap-icon://document"
+		id="page"
+		description="">
+		<customDescription>
+			<Link id="link" text="back" press="onLinkPressed" />
+		</customDescription>
+	</MessagePage>
+</mvc:View>

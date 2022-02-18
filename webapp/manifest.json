@@ -1,0 +1,140 @@
+{
+  "_version": "1.32.0",
+  "sap.app": {
+    "id": "ch.nic.mapsample",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "dataSources": {
+			"mapConfig": {
+				"type": "JSON",
+				"uri": "./mapconfig.json"
+			}
+		}
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "rootView": {
+      "viewName": "ch.nic.mapsample.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.98.0",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
+        "sap.ui.layout": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "ch.nic.mapsample.i18n.i18n"
+        }
+      },
+      "mapConfig": {
+        "dataSource": "mapConfig"
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "ch.nic.mapsample.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "bypassed": {
+          "target": "notFound"
+        }
+      },
+      "routes": [
+        {
+          "pattern": "",
+          "name": "main",
+          "target": ["main"]
+        },
+        {
+          "pattern": "overview/:?query:",
+          "name": "overview",
+          "target": ["overview"]
+        },
+        {
+          "pattern": "logons",
+          "name": "logon",
+          "target": ["logon"]
+        },
+        {
+          "pattern": "logouts",
+          "name": "logout",
+          "target" : "logout"
+        },
+        {
+          "pattern": "geoviews",
+          "name": "geoview",
+          "target" : "geoview"
+        }
+      ],
+      "targets": {
+        "main": {
+          "viewId": "MainView",
+          "viewName": "MainView"
+        },
+        "overview": {
+          "viewId": "overview",
+          "viewName": "Overview"
+        },
+        "logon": {
+          "viewId": "logonView",
+          "viewName": "LogonView"
+        },
+        "logout": {
+          "viewId": "logoutView",
+          "viewName": "LogoutView"
+        },
+        "geoview": {
+          "viewId": "geoview",
+          "viewName": "GeoView"
+        },
+        "notFound": {
+          "viewName": "NotFound",
+          "viewId": "notFound"
+        }
+      }
+    }
+  }
+}
