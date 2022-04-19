@@ -6,7 +6,9 @@ sap.ui.define([
 	"sap/m/Dialog",
 	"sap/m/DialogType",
 	"sap/m/Button",
-	"sap/m/Text"
+	"sap/m/Text",
+	"sap/ui/vbm/ClusterTree",
+	"sap/ui/vbm/Cluster"
 ],
 
 	function (Controller,
@@ -16,7 +18,9 @@ sap.ui.define([
 	Dialog,
 	DialogType,
 	Button,
-	Text) {
+	Text,
+	ClusterTree,
+	Cluster) {
 		"use strict";
 
 		var oLocationModel = new JSONModel("./Data.json");
@@ -32,6 +36,7 @@ sap.ui.define([
 
 			onInit: function () {
 				this.getView().setModel(oLocationModel)
+				this.getView().getModel().setProperty("/amounts", oLocationModel.getData().Spots.length)
 
 				this.getView().setModel(new JSONModel, "view");
 				this.getRouter().getRoute("overview").attachMatched(this._onRouteMatched, this);
@@ -45,9 +50,57 @@ sap.ui.define([
 
 				this._loadMapFragment('ch.nic.mapsample.view.Mapfragment');
 
+				console.log(this._currentFragment)
 			},
 
 			_onRouteMatched: function(oEvent){
+
+				let unSortPos = [
+					{
+						posNr : 1,
+						descr : "eins",
+						sort : "T1"
+					},
+					{
+						posNr : 2,
+						descr : "zwei",
+						sort : "T3"
+					},
+					{
+						posNr : 3,
+						descr : "drei",
+						sort : "T1"
+					},
+					{
+						posNr : 4,
+						descr : "vier",
+						sort : ""
+					},
+					{
+						posNr : 5,
+						descr : "fünf",
+						sort : "T2"
+					},
+					{
+						posNr : 6,
+						descr : "sechs",
+						sort : "T4"
+					},
+				]
+
+				const length = unSortPos.length
+				for(let i = length-1; i>=0; i--){
+					for(let j = 1; j <=i; j++){
+						if(unSortPos[j-1].sort > unSortPos[j].sort){
+							let temp = unSortPos[j-1]
+							unSortPos[j-1] = unSortPos[j]
+							unSortPos[j] = temp
+						}
+					}
+				}
+
+				console.log(unSortPos)
+
 				let oArgs, oView, oQuery;
 				oArgs = oEvent.getParameter("arguments");
 				oView = this.getView();
@@ -66,7 +119,6 @@ sap.ui.define([
 				}
 			},
 
-
 			onTabSelect: function(oEvent){
 				this.getRouter().navTo("overview", {
 
@@ -79,7 +131,7 @@ sap.ui.define([
             
 
 			onLogOns : function() {
-				this.getRouter().navTo("logon");
+				this.getRouter().navTo("list");
 			},
 
 			onLogOuts : function() {
@@ -95,7 +147,7 @@ sap.ui.define([
 			},
 
 			onActionSelect() {
-				this._oPeriods = this.byId("select").mProperties.selectedKey;
+				this._oPeriods = this.byId("mapSegment").mProperties.selectedKey;
 				let fragmentName;
 				switch(this._oPeriods) {
 					case "1": 
@@ -109,6 +161,7 @@ sap.ui.define([
 				}
 
 				this._loadMapFragment(fragmentName)
+				this.byId("switch").setProperty("state", false)
 			},
 
 			_loadMapFragment(fragmentName) {
@@ -124,10 +177,11 @@ sap.ui.define([
 
 					const oTab = this.byId("mapFilter")
 					this.getView().addDependent(oFragment);
-
 					oTab.removeContent(oFragment);
-					oTab.addContent(oFragment);				
+					oTab.addContent(oFragment);	
 				}.bind(this));
+
+				console.log(this._currentFragment)
 			},
 
 			onClickSpot: function(oEvent) {
@@ -173,13 +227,68 @@ sap.ui.define([
 				console.log("idk")
 			},
 
-			onCluster: function(oEvent){
-				console.log(oEvent)
-				let rule = this.getView().byId("clusterTree").getRule()
-				let color = this.getView().byId("clusterTree").getAreaColor()
+			onSwitch: function() {
+				let loadedMap
+				const analyticMap = this.byId("analyticmap")
+				const geoMap = this.byId("geomap")
+				if(analyticMap){
+					loadedMap = analyticMap
+				} else {
+					loadedMap = geoMap
+				}
 
-				console.log(rule+ " "+ color)
-			}
+				let sState = this.byId("switch").getProperty("state")
+				if(sState){
+					// if(!this.ocurrentClustering){
+						this.ocurrentClustering = new ClusterTree({
+							click: this.onClickCluster.bind(this),
+							vizTemplate : new Cluster({
+								type: "Error",
+								icon: "sap-icon://visits"
+							})
+						})
+					// }
+					loadedMap.addCluster(this.ocurrentClustering)
+				} else {
+					loadedMap.removeCluster(this.ocurrentClustering)
+					this.ocurrentClustering.destroy()
+				}
+			},
+
+			onClickCluster: function(oEvent){
+				let loadedMap
+				const analyticMap = this.byId("analyticmap")
+				const geoMap = this.byId("geomap")
+				if(analyticMap){
+					loadedMap = analyticMap
+				} else {
+					loadedMap = geoMap
+				}
+
+				let clusterKey = oEvent.getParameter("instance").getKey()
+				let clusterType = sap.ui.vbm.ClusterInfoType.ContainedVOs;
+				let clusterInfo = loadedMap.getInfoForCluster(clusterKey, clusterType)
+				
+				let cluster = []
+				clusterInfo.forEach(info => {
+					let spot = 	loadedMap.getVoByInternalId(info)
+					if(spot){
+						cluster.push(
+							{
+								name: spot.getTooltip(),
+								pos: spot.getPosition()+";0",
+								text: spot.getText(),
+								state: spot.getType()
+							}
+						)
+					}
+				});
+				// console.log(cluster)
+				let zoom = loadedMap.getZoomlevel()
+				loadedMap.setInitialPosition(cluster[0].pos)
+				loadedMap.setZoomlevel(zoom+2)
+				
+			},
 
 		});
 	});

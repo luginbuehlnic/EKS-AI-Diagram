@@ -1,0 +1,102 @@
+<mvc:View
+	controllerName="ch.nic.mapsample.controller.ListView"
+	xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:semantic="sap.f.semantic"
+	xmlns:tnt="sap.tnt"
+	xmlns:fb="sap.ui.comp.filterbar"
+	height="100%"
+    id="listView"
+>
+	<tnt:ToolHeader
+	>
+		<Button icon="sap-icon://nav-back" press="onNavBack"/>
+		<Button icon="sap-icon://sap-logo-shape" press="onHome"/>
+		<Text text="Home"/>
+		<ToolbarSpacer/>
+		<Button icon="sap-icon://account"/>
+	</tnt:ToolHeader>
+    <semantic:SemanticPage id="idListView" headerPinnable="false" toggleHeaderOnTitleClick="false">
+
+        <semantic:titleHeading >
+			<Title id="tableHeaderId" text="Login Data"/>
+		</semantic:titleHeading>
+		
+		<semantic:titleExpandedContent>
+			<HBox
+			>
+				<!-- <fb:FilterBar
+				>
+					<fb:filterGroupItems>
+						
+					</fb:filterGroupItems>
+				</fb:FilterBar> -->
+				<SearchField
+					id="searchField"
+					tooltip="search"
+					search=".onSearch"
+					width="auto">
+				</SearchField>	
+			</HBox>
+		</semantic:titleExpandedContent>
+        <semantic:content >
+			<Table
+				id="loginTable"
+				items="{/Spots}"
+				width="auto"
+				growing="true"
+				growingScrollToLoad="true"
+			>
+				<columns>
+					<Column id="headerId"
+						demandPopin="true"
+						minScreenWidth="Tablet"
+						vAlign="Middle">
+						<Text text="ID"/>
+					</Column>
+					<Column id="headerTextId"
+						demandPopin="true"
+						minScreenWidth="Tablet"
+						vAlign="Middle">
+						<Text text="Text"/>
+					</Column>
+					<Column id="headerLocationId"
+						demandPopin="true"
+						minScreenWidth="Tablet"
+						vAlign="Middle">
+						<Text text="Location"/>
+					</Column>
+					<Column id="headerTypeId"
+						demandPopin="true"
+						minScreenWidth="Tablet"
+						vAlign="Middle">
+						<Text text="Type"/>
+					</Column>
+					<Column id="headerTimeId"
+						demandPopin="true"
+						vAlign="Middle"
+						minScreenWidth="Tablet">
+						<Text text="Time"/>
+					</Column>
+				</columns>
+
+				<items id="{id}">
+					<ColumnListItem
+						type="Navigation"
+						press=".onPress"
+					>
+						<cells>
+							<ObjectIdentifier
+								title="{id}"/>
+							<Text text="{text}"/>
+							<Text text="{tooltip}"/>
+							<ObjectStatus text="{type}" state="{state}"/>
+							<ObjectNumber number="{time}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</semantic:content>
+    </semantic:SemanticPage>
+</mvc:View>

@@ -94,14 +94,14 @@
           "target": ["overview"]
         },
         {
-          "pattern": "logons",
-          "name": "logon",
-          "target": ["logon"]
+          "pattern": "list",
+          "name": "list",
+          "target": ["list"]
         },
         {
-          "pattern": "logouts",
-          "name": "logout",
-          "target" : "logout"
+          "pattern": "detail/{spotId}",
+          "name": "detail",
+          "target" : "detail"
         },
         {
           "pattern": "geoviews",
@@ -118,13 +118,13 @@
           "viewId": "overview",
           "viewName": "Overview"
         },
-        "logon": {
-          "viewId": "logonView",
-          "viewName": "LogonView"
+        "list": {
+          "viewId": "listView",
+          "viewName": "ListView"
         },
-        "logout": {
-          "viewId": "logoutView",
-          "viewName": "LogoutView"
+        "detail": {
+          "viewId": "detailView",
+          "viewName": "Detail"
         },
         "geoview": {
           "viewId": "geoview",

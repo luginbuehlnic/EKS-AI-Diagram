@@ -8,23 +8,23 @@
 		<l:fixContent>
 			<Panel>
 				<content>
-					<Text text="This Map shows locations of the latest Logins" class="sapUiSmallMarginBottom"/>
+					<!-- <Text text="This Map shows locations of the latest Logins" class="sapUiSmallMarginBottom"/> -->
 				</content>
 			</Panel>
 		</l:fixContent>
 		<l:flexContent>
 			<VBox  backgroundDesign="Solid"
 				>
-				<vbm:AnalyticMap id="analyticmap" initialPosition="9;47" regionClick="onRegionClick" initialZoom="5" width="100%" enableAnimation="true">
+				<vbm:AnalyticMap id="analyticmap" initialPosition="9;47" regionClick=".onRegionClick" initialZoom="5" width="100%" enableAnimation="true">
 					<vbm:vos>
-						<vbm:Spots items="{/Spots}" click="onClickItem">
+						<vbm:Spots items="{/Spots}" click=".onClickItem">
 							<vbm:Spot position="{pos}" tooltip="{tooltip}"
-								click="onClickSpot" type="{type}"/>
+								click=".onClickSpot" type="{type}"/>
 						</vbm:Spots>
 						<vbm:Routes items="{/GeoRoutes}">
 							<vbm:Route position="{route}"
 								color="{color}" colorBorder="{colorBorder}" linewidth="{line}"
-								routetype="{routetype}" lineDash="{dash}" click="onClickRoute" contextMenu="onContextMenuRoute" />
+								routetype="{routetype}" lineDash="{dash}" click=".onClickRoute" contextMenu=".onContextMenuRoute" />
 						</vbm:Routes>
 					</vbm:vos>
 					<vbm:legend>
@@ -35,13 +35,13 @@
 							<vbm:LegendItem text="Inactive" semanticSpotType="Inactive"/>
 						</vbm:Legend>
 					</vbm:legend>
-					<vbm:clusters>
+					<!-- <vbm:clusters>
 						<vbm:ClusterTree id="clusterTree" areaColor="rgba(255,255,255,0)" areaColorBorder="rgba(255,255,255,0)" click="onCluster">
 								<vbm:vizTemplate>
 									<vbm:Cluster id="vizTemplate" type="Warning" icon="sap-icon://visits"/>
 								</vbm:vizTemplate>
 						</vbm:ClusterTree>
-					</vbm:clusters>
+					</vbm:clusters> -->
 				</vbm:AnalyticMap>
 			</VBox>
 		</l:flexContent>

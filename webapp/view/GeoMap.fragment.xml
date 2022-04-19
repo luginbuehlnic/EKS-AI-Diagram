@@ -8,7 +8,7 @@
 		<l:fixContent>
 			<Panel>
 				<content>
-					<Text text="This Map shows locations of the latest Logins" class="sapUiSmallMarginBottom"/>
+					<!-- <Text text="This Map shows locations of the latest Logins" class="sapUiSmallMarginBottom"/> -->
 				</content>
 			</Panel>
 		</l:fixContent>
@@ -43,13 +43,13 @@
                             <vbm:LegendItem text="Inactive" semanticSpotType="Inactive"/>
                         </vbm:Legend>
                     </vbm:legend>
-                    <vbm:clusters>
+                    <!-- <vbm:clusters>
 						<vbm:ClusterTree id="clusterTree" areaColor="rgba(255,255,255,0)" areaColorBorder="rgba(255,255,255,0)" >
 								<vbm:vizTemplate>
 									<vbm:Cluster id="vizTemplate" type="Error" icon="sap-icon://visits"/>
 								</vbm:vizTemplate>
 						</vbm:ClusterTree>
-					</vbm:clusters>
+					</vbm:clusters> -->
                 </vbm:GeoMap>
             </VBox>
 		</l:flexContent>

@@ -10,7 +10,7 @@
 		<tnt:ToolHeader
 		>
 			<Button icon="sap-icon://sap-logo-shape"/>
-			<Title text="Home" titleStyle="H5"/>
+			<Title text="{i18n>home}" titleStyle="H5"/>
 			<ToolbarSpacer/>
 			<Button icon="sap-icon://account"/>
 		</tnt:ToolHeader>

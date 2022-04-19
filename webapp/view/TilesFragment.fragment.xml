@@ -11,14 +11,9 @@
                     <NewsContent contentText="Some random News that could be interesting"/>
                 </TileContent>
             </GenericTile>
-            <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="LogOn's" frameType="OneByHalf" press="onLogOns">
+            <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="List" frameType="OneByHalf" press="onLogOns">
                 <TileContent unit="last Month">
-                    <NumericContent id="idLogOnTile" value="43" icon="sap-icon://visits" withMargin="false"/>  
-                </TileContent>
-            </GenericTile>
-            <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="LogOuts" frameType="OneByHalf" press="onLogOuts">
-                <TileContent unit="last Month">
-                    <NumericContent id="idLogOutTile" value="26" icon="sap-icon://action" withMargin="false"/>
+                    <NumericContent id="idLogOnTile" value="{/amounts}" icon="sap-icon://list" withMargin="false"/>  
                 </TileContent>
             </GenericTile>
 

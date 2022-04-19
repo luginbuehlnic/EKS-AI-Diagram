@@ -1,0 +1,77 @@
+<mvc:View
+	controllerName="ch.nic.mapsample.controller.Detail"
+	xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns:semantic="sap.f.semantic"
+	xmlns:vbm="sap.ui.vbm"
+	xmlns:tnt="sap.tnt"
+    height="100%"
+    id="detailView"
+>
+	<tnt:ToolHeader
+	>
+		<Button icon="sap-icon://nav-back" press="onNavBack"/>
+			<Button icon="sap-icon://sap-logo-shape" press="onHome"/>
+			<Text text="Home"/>
+			<ToolbarSpacer/>
+			<Button icon="sap-icon://account"/>
+	</tnt:ToolHeader>
+     <semantic:SemanticPage id="idDetailView">
+	 	<semantic:titleHeading>
+			<Title text="{location>/text}"/>
+		</semantic:titleHeading>
+        <semantic:headerContent>
+			<ObjectStatus
+				text="{location>/type}" state="{location>/state}" icon="{location>/icon}"/>
+			<FlexBox
+				alignItems="Start"
+				justifyContent="Inherit"
+			>
+				<Panel backgroundDesign="Transparent"
+				class="sapUiLargeMarginEnd">
+					<ObjectAttribute
+						title="ID"
+						text="{location>/id}"/>
+					<ObjectAttribute
+					title="Location"
+					text="{location>/tooltip}"/>
+					<ObjectAttribute
+					title="Time"
+					text="{location>/time}"/>
+				</Panel>
+				<Panel backgroundDesign="Transparent">
+					<ObjectAttribute
+					title="Position"
+					text="{location>/pos}"/>
+					<ObjectAttribute
+					title="Longitude"
+					text="{location>/logitude}"/>
+					<ObjectAttribute
+					title="Laltitude"
+					text="{location>/latitude}"/>
+				</Panel>
+			</FlexBox >
+		</semantic:headerContent>
+		<semantic:content>
+			<VBox>
+				<vbm:GeoMap id="detailMap" mapConfiguration="{mapConfig>/}" initialZoom="7" initialPosition="{location>/pos}" width="100%" enableAnimation="false">
+					<vbm:vos>
+						<vbm:Spots>
+							<vbm:Spot position="{location>/pos}" tooltip="{location>/tooltip}"
+								type="{location>/type}"/>
+						</vbm:Spots>
+					</vbm:vos>
+					<vbm:legend>
+						<vbm:Legend>
+							<vbm:LegendItem text="Warning" semanticSpotType="Warning"/>
+							<vbm:LegendItem text="Success" semanticSpotType="Success"/>
+							<vbm:LegendItem text="Error" semanticSpotType="Error"/>
+							<vbm:LegendItem text="Inactive" semanticSpotType="Inactive"/>
+						</vbm:Legend>
+					</vbm:legend>
+				</vbm:GeoMap>
+			</VBox>
+		</semantic:content>
+    </semantic:SemanticPage>
+</mvc:View>
