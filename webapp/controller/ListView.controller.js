@@ -17,6 +17,8 @@ sap.ui.define([
 
 	var oLocationModel = new JSONModel("./Data.json");
 	return BaseController.extend("ch.nic.mapsample.controller.ListView", {
+
+		_currentFragment: undefined,
 		onInit: function () {
 
 			let {Spots} = oLocationModel.getData()
@@ -28,66 +30,24 @@ sap.ui.define([
 				}
 			}
 
+			oLocationModel.getData().AlertAmount = oLocationModel.getData().Alerts.length
+
 			this.getView().setModel(oLocationModel)
 
 			this.getView().setModel(new JSONModel, "view");
 
-			this.getRouter().getRoute("main").attachMatched(this._onRouteMatched, this);
-			//this.getRouter().getRoute("detail").attachMatched(this._onDetailLoaded, this);
+			this.getRouter().getRoute("list").attachMatched(this._onRouteMatched, this);
+		},
+		
+		_onRouteMatched: function(oEvent){
+			this._loadFragment("ch.nic.mapsample.view.LoginList")
 		},
 
 		onPress: function(oEvent) {
 			const id = oEvent.getSource().getBindingContext().getProperty("id")
 			this.navTo("detail", {spotId: id}, false)
 		},
-		_onRouteMatched: function(oEvent){
-			// let oArgs, oView, oQuery;
-			// oArgs = oEvent.getParameter("arguments");
-			// oView = this.getView();
-			// oQuery = oArgs["?query"];
-
-			// if(oQuery && _aValidTabKeys.indexOf(oQuery.tab) > -1){
-			// 	oView.getModel("view").setProperty("/selectedTabKey", oQuery.tab);
-			// } else {
-			// 	this.getRouter().navTo("detail", {
-			// 		employeeId : oArgs.employeeId,
-
-			// 		"?query": {
-			// 			tab: _aValidTabKeys[0]
-			// 		}
-			// 	}, true)
-			// }
-		},
-
-		_onDetailLoaded: function(oEvent){
-			const id = parseFloat(oEvent.getParameter("arguments").spotId)
-			
-			var oLocation = new JSONModel(oLocationModel.getData().Spots.find((Spot) => Spot.id === id))
-			
-			switch (oLocation.getData().state){
-				case "None":
-					oLocation.getData().icon=""
-					break;
-				case "Warning":
-					oLocation.getData().icon="sap-icon://message-warning"
-					break;
-				case "Error":
-					oLocation.getData().icon="sap-icon://message-error"
-					break;
-				case "Success":
-					oLocation.getData().icon="sap-icon://message-success"
-					break;
-			}
-
-			let pos = oLocation.getData().pos
-			this.byId("detailMap").setInitialPosition(pos)
-			this.byId("detailMap").setZoomlevel(7);
-				
-
-			this.getView().setModel(oLocation, "location")
-			
-		},
-
+		
 		onSearch: function(oEvent){
 			let {Spots} = oLocationModel.getData()
 			if (oEvent.getParameters().refreshButtonPressed) {
@@ -99,8 +59,64 @@ sap.ui.define([
 				if (sQuery && sQuery.length > 0) {
 					aTableSearchState = [new Filter("ProductName", FilterOperator.Contains, sQuery)];
 				}
-				this._applySearch(aTableSearchState);
+				// this._applySearch(aTableSearchState);
 			}
+		},
+
+		onTitlePress: function(){
+			var {Alerts} = oLocationModel.getData()
+			var ids = 2000
+
+			Alerts.forEach(alert => {
+				alert.id=ids++
+				alert.state = alert.type
+				if(alert.state === "Inactive"){
+					alert.state = "None"
+				}
+			})
+			this._loadFragment("ch.nic.mapsample.view.AlertsList")
+			this.byId("checkoutButton").setVisible(true)
+		},
+
+		onSelectionChange: function(oEvent){
+			this.byId("checkoutButton").setEnabled(true)
+		},
+
+		onCheckout: function(oEvent){
+			var aContexts = this.byId("alertsTable").getSelectedContexts();
+
+			for(var i = aContexts.length-1; i>=0; i--){
+				var sPath = aContexts[i].getPath()
+				var sIndex = sPath.slice(-1)
+				oLocationModel.getData().Alerts[sIndex].checked = true
+
+				oLocationModel.getData().Alerts.splice(i,1)
+				sIndex = parseFloat(sIndex)
+				this.byId("alertsTable").removeItem(sIndex);
+			}
+
+			this.byId("alertsTable").removeSelections()
+			this.byId("checkoutButton").setEnabled(false)
+		},
+
+		/**
+		 * @override
+		 */
+		onNavBack: function() {
+			var aCurrentFragmentName = this._currentFragment.getId().split("--")
+			
+			switch (aCurrentFragmentName[aCurrentFragmentName.length-1]){
+				case "loginTable" :
+					BaseController.prototype.onNavBack.apply(this, arguments);
+					break;
+				case "alertsTable" :
+					this._loadFragment("ch.nic.mapsample.view.LoginList")
+					break;
+				default :
+					BaseController.prototype.onNavBack.apply(this, arguments);
+					break;
+			}
+		
 		},
 
 		_applySearch: function(){
@@ -111,6 +127,24 @@ sap.ui.define([
 			if (aTableSearchState.length !== 0) {
 				oLocationModel.setProperty("/tableNoDataText", this.getResourceBundle().getText("worklistNoDataWithSearchText"));
 			}
+		},
+
+		_loadFragment(fragmentName) {
+			if(this._currentFragment){
+				this._currentFragment.destroy();
+				this._currentFragment = undefined;
+			}
+			this.loadFragment({
+				name: fragmentName,
+				type: "XML"
+			}).then(function (oFragment){
+				this._currentFragment = oFragment;
+
+				const oTab = this.byId("idListView")
+				this.getView().addDependent(oFragment);
+				oTab.destroyContent(oFragment);
+				oTab.setContent(oFragment);	
+			}.bind(this));
 		},
 	});
 });

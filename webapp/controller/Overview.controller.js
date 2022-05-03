@@ -50,7 +50,11 @@ sap.ui.define([
 
 				this._loadMapFragment('ch.nic.mapsample.view.Mapfragment');
 
-				console.log(this._currentFragment)
+				const rangeSlider = this.byId("rangeSlider")
+				rangeSlider.setMax(90)
+				rangeSlider.setMin(0)
+				rangeSlider.setValue(1)
+
 			},
 
 			_onRouteMatched: function(oEvent){
@@ -98,8 +102,6 @@ sap.ui.define([
 						}
 					}
 				}
-
-				console.log(unSortPos)
 
 				let oArgs, oView, oQuery;
 				oArgs = oEvent.getParameter("arguments");
@@ -180,8 +182,6 @@ sap.ui.define([
 					oTab.removeContent(oFragment);
 					oTab.addContent(oFragment);	
 				}.bind(this));
-
-				console.log(this._currentFragment)
 			},
 
 			onClickSpot: function(oEvent) {
@@ -288,6 +288,66 @@ sap.ui.define([
 				loadedMap.setInitialPosition(cluster[0].pos)
 				loadedMap.setZoomlevel(zoom+2)
 				
+			},
+
+			onRangeSlider: function(oEvent) {
+				let {Spots} = oLocationModel.getData()
+				let key = this.byId("rangeSelection").getSelectedKey()
+				let aSpot = []
+				let currentTimestamp = Math.round(new Date().getTime()/1000)
+				const oRange = this._getRangeTimestamp(key)
+
+				Spots.forEach(spot => {
+					let [date, time] = spot.time.split(" ");
+					let [day, month, year] = date.split(".")
+					let [hour, min] = time.split(":")
+					month = month-1
+					let timestamp = Math.round(new Date(year, month, day, hour, min).getTime()/1000)
+					if(timestamp >= currentTimestamp-oRange){
+						aSpot.push(spot)
+					}
+				});
+
+				oLocationModel.getData().Spots = aSpot
+				this.onActionSelect()
+				
+			},
+
+			onRangeSelection: function(oEvent){
+				const key = oEvent.getSource().getSelectedKey();
+				
+				let maxIndex;
+				switch (key) {
+					case "1" :
+						maxIndex = 59
+						break;
+					case "2" :
+						maxIndex = 23
+						break;
+					case "3" :
+						maxIndex = 90
+						break;
+				}
+
+				this.onRangeSlider(oEvent)
+				this.byId("rangeSlider").setMax(maxIndex)
+				
+			},
+
+			_getRangeTimestamp: function(selectedKey){
+				let oRange = parseFloat(this.byId("rangeSlider").getValue()) 
+				let operator;
+				switch (selectedKey) {
+					case "1" :
+						operator = 60
+					case "2" :
+						operator = 3600
+					case "3" :
+						operator = 86400
+				}
+
+				oRange = oRange*operator
+				return oRange
 			},
 
 		});

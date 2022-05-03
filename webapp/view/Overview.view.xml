@@ -53,6 +53,34 @@
 											<Switch state="false" id="switch" change="onSwitch"/>
 										</l:content>
 									</l:VerticalLayout>
+									<l:VerticalLayout class="sapUiTinyMarginBegin">
+										<l:content>
+											<Text text="Rangeselection:"/>
+											<ActionSelect id="rangeSelection" change="onRangeSelection" selectedKey="3">
+												<items>
+													<core:Item text="minutes" key="1"/>
+													<core:Item text="hours" key="2"/>
+													<core:Item text="days" key="3"/>
+												</items>
+											</ActionSelect>
+										</l:content>
+									</l:VerticalLayout>
+								</l:content>
+							</l:HorizontalLayout>
+							<l:HorizontalLayout>
+								<l:content>
+									<l:VerticalLayout>
+										<l:content>
+											<Text text="Range:" class="sapUiSmallMarginTop" />
+											<Slider id="rangeSlider"
+												width="800%"
+												showAdvancedTooltip="true"
+												showHandleTooltip="false"
+												enableTickmarks="true"
+												inputsAsTooltips="true"
+												change="onRangeSlider"/>
+										</l:content>
+									</l:VerticalLayout>
 								</l:content>
 							</l:HorizontalLayout>
 						</l:VerticalLayout>

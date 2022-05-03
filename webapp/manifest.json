@@ -1,140 +1,150 @@
 {
-  "_version": "1.32.0",
-  "sap.app": {
-    "id": "ch.nic.mapsample",
-    "type": "application",
-    "i18n": "i18n/i18n.properties",
-    "applicationVersion": {
-      "version": "0.0.1"
+    "_version": "1.32.0",
+    "sap.app": {
+        "id": "ch.nic.mapsample",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "dataSources": {
+            "mapConfig": {
+                "type": "JSON",
+                "uri": "./mapconfig.json"
+            }
+        }
     },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
-    "dataSources": {
-			"mapConfig": {
-				"type": "JSON",
-				"uri": "./mapconfig.json"
-			}
-		}
-  },
-  "sap.ui": {
-    "technology": "UI5",
-    "icons": {
-      "icon": "",
-      "favIcon": "",
-      "phone": "",
-      "phone@2": "",
-      "tablet": "",
-      "tablet@2": ""
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
     },
-    "deviceTypes": {
-      "desktop": true,
-      "tablet": true,
-      "phone": true
+    "sap.ui5": {
+        "flexEnabled": true,
+        "rootView": {
+            "viewName": "ch.nic.mapsample.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "app"
+        },
+        "dependencies": {
+            "minUI5Version": "1.98.0",
+            "libs": {
+                "sap.ui.core": {},
+                "sap.m": {},
+                "sap.ui.layout": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "ch.nic.mapsample.i18n.i18n"
+                }
+            },
+            "mapConfig": {
+                "dataSource": "mapConfig"
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "ch.nic.mapsample.view",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "bypassed": {
+                    "target": "notFound"
+                }
+            },
+            "routes": [
+                {
+                    "pattern": "",
+                    "name": "main",
+                    "target": [
+                        "main"
+                    ]
+                },
+                {
+                    "pattern": "overview/:?query:",
+                    "name": "overview",
+                    "target": [
+                        "overview"
+                    ]
+                },
+                {
+                    "pattern": "list",
+                    "name": "list",
+                    "target": [
+                        "list"
+                    ]
+                },
+                {
+                    "pattern": "detail/{spotId}",
+                    "name": "detail",
+                    "target": "detail"
+                },
+                {
+                    "pattern": "geoviews",
+                    "name": "geoview",
+                    "target": "geoview"
+                }
+            ],
+            "targets": {
+                "main": {
+                    "viewId": "MainView",
+                    "viewName": "MainView"
+                },
+                "overview": {
+                    "viewId": "overview",
+                    "viewName": "Overview"
+                },
+                "list": {
+                    "viewId": "listView",
+                    "viewName": "ListView"
+                },
+                "detail": {
+                    "viewId": "detailView",
+                    "viewName": "Detail"
+                },
+                "geoview": {
+                    "viewId": "geoview",
+                    "viewName": "GeoView"
+                },
+                "notFound": {
+                    "viewName": "NotFound",
+                    "viewId": "notFound"
+                }
+            }
+        }
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "ch-nic-mapsample"
     }
-  },
-  "sap.ui5": {
-    "flexEnabled": true,
-    "rootView": {
-      "viewName": "ch.nic.mapsample.view.App",
-      "type": "XML",
-      "async": true,
-      "id": "app"
-    },
-    "dependencies": {
-      "minUI5Version": "1.98.0",
-      "libs": {
-        "sap.ui.core": {},
-        "sap.m": {},
-        "sap.ui.layout": {}
-      }
-    },
-    "contentDensities": {
-      "compact": true,
-      "cozy": true
-    },
-    "models": {
-      "i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "ch.nic.mapsample.i18n.i18n"
-        }
-      },
-      "mapConfig": {
-        "dataSource": "mapConfig"
-      }
-    },
-    "resources": {
-      "css": [
-        {
-          "uri": "css/style.css"
-        }
-      ]
-    },
-    "routing": {
-      "config": {
-        "routerClass": "sap.m.routing.Router",
-        "viewType": "XML",
-        "async": true,
-        "viewPath": "ch.nic.mapsample.view",
-        "controlAggregation": "pages",
-        "controlId": "app",
-        "bypassed": {
-          "target": "notFound"
-        }
-      },
-      "routes": [
-        {
-          "pattern": "",
-          "name": "main",
-          "target": ["main"]
-        },
-        {
-          "pattern": "overview/:?query:",
-          "name": "overview",
-          "target": ["overview"]
-        },
-        {
-          "pattern": "list",
-          "name": "list",
-          "target": ["list"]
-        },
-        {
-          "pattern": "detail/{spotId}",
-          "name": "detail",
-          "target" : "detail"
-        },
-        {
-          "pattern": "geoviews",
-          "name": "geoview",
-          "target" : "geoview"
-        }
-      ],
-      "targets": {
-        "main": {
-          "viewId": "MainView",
-          "viewName": "MainView"
-        },
-        "overview": {
-          "viewId": "overview",
-          "viewName": "Overview"
-        },
-        "list": {
-          "viewId": "listView",
-          "viewName": "ListView"
-        },
-        "detail": {
-          "viewId": "detailView",
-          "viewName": "Detail"
-        },
-        "geoview": {
-          "viewId": "geoview",
-          "viewName": "GeoView"
-        },
-        "notFound": {
-          "viewName": "NotFound",
-          "viewId": "notFound"
-        }
-      }
-    }
-  }
 }

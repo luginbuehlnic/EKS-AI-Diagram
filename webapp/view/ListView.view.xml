@@ -9,8 +9,7 @@
 	height="100%"
     id="listView"
 >
-	<tnt:ToolHeader
-	>
+	<tnt:ToolHeader>
 		<Button icon="sap-icon://nav-back" press="onNavBack"/>
 		<Button icon="sap-icon://sap-logo-shape" press="onHome"/>
 		<Text text="Home"/>
@@ -23,25 +22,52 @@
 			<Title id="tableHeaderId" text="Login Data"/>
 		</semantic:titleHeading>
 		
-		<semantic:titleExpandedContent>
+		<semantic:headerContent>
 			<HBox
+				alignItems="Start" justifyContent="SpaceBetween"
 			>
-				<!-- <fb:FilterBar
+				<!-- <ObjectHeader
+					icon="sap-icon://message-warning"
+					title="Alerts"
+					titleActive="true"
+					titleLevel="H3"
+					titlePress=".onTitlePress"
+					number="{/AlertAmount}"
 				>
-					<fb:filterGroupItems>
+				</ObjectHeader> -->
+				<ObjectStatus
+					class="sapMObjectStatusLarge"
+					active="true"
+					icon="sap-icon://message-warning"
+					state="Warning"
+					text="Alerts"
+					press="onTitlePress"
+				/>
+				<VBox	
+					alignItems="End"
+				>
+					<SearchField
+						id="searchField"
+						tooltip="search"
+						search=".onSearch"
+						width="auto">
+					</SearchField>
+					<Button
+						id="checkoutButton"
+						text="Checkout"
+						press="onCheckout"
+						visible="false"
+						enabled="false"
+					>
 						
-					</fb:filterGroupItems>
-				</fb:FilterBar> -->
-				<SearchField
-					id="searchField"
-					tooltip="search"
-					search=".onSearch"
-					width="auto">
-				</SearchField>	
+					</Button>
+				</VBox>
+					
 			</HBox>
-		</semantic:titleExpandedContent>
-        <semantic:content >
-			<Table
+		</semantic:headerContent>
+        <semantic:content id="loginTable">
+			<core:Fragment fragmentName="ch.nic.mapsample.view.LoginList" type="XML" id="loginlist"/>
+			<!-- <Table
 				id="loginTable"
 				items="{/Spots}"
 				width="auto"
@@ -96,7 +122,7 @@
 						</cells>
 					</ColumnListItem>
 				</items>
-			</Table>
+			</Table> -->
 		</semantic:content>
     </semantic:SemanticPage>
 </mvc:View>
