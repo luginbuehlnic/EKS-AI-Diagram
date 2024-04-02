@@ -1,8 +1,0 @@
-<mvc:View
-	controllerName="ch.nic.mapsample.controller.App"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.m"
-	displayBlock="true"
->
-    <App id="app"/>
-</mvc:View>
